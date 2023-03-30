@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Bootstrap Carousel Example</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+            crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <span class="fs-1" id="nadpis">Coins</span>
+    <div id="output-container">
+        <h4>output</h4>
+        <p></p>
+    </div>
+    <br>
+    <button class="btn btn-primary d-inline-flex align-items-center" type="button" id="generateNew">
+        Generate new Fact
+        <svg class="bi ms-1" width="20" height="20"><use xlink:href="#arrow-right-short"></use></svg>
+      </button>
+
+      <button class="btn btn-outline-secondary d-inline-flex align-items-center" type="button" id="like">
+        Like
+        <svg class="bi ms-1" width="20" height="20"><use xlink:href="#arrow-right-short"></use></svg>
+      </button>
+
+      <button class="btn btn-outline-secondary d-inline-flex align-items-center" type="button" id="dislike">
+        Dislike
+        <svg class="bi ms-1" width="20" height="20"><use xlink:href="#arrow-right-short"></use></svg>
+      </button>
+    
+</body>
+<style>
+#nadpis
+{
+  margin: auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
+
+}
+#output-container
+{
+    background-color: grey;
+        width: 300px;
+        height: 80px;
+        resize: both;
+        overflow: hidden;
+        border-radius: 5px;
+}
+.content {
+  max-width: 500px;
+  margin: auto;
+}
+</style>
+<script>
+
+    $(document).ready(function () {
+        var likebtn = document.querySelector('#like');
+        var dislikebtn = document.querySelector('#dislike');
+        var generate = document.querySelector('#generateNew');
+        
+        var type;
+        var name;
+        let i = 0;
+
+                $("#like").hide();
+                $("#dislike").hide();
+
+            $("#generateNew").click(function () {
+                generateCoin(i);
+                i++;
+            });
+            $("#like").click(function () {
+                localStorage.setItem(name, "like");
+                $("#output-container").animate({
+                    color: "#FF0000"
+                }, 500);
+                }, function() {
+                $(this).animate({
+                    color: "#FF0000"
+                }, 500);
+            });
+            $("#dislike").click(function () {
+                localStorage.setItem(name, "dislike");
+                localStorage.setItem(name, "like");
+                $("#output-container").animate({
+                    color: "#FF0000"
+                }, 500);
+                }, function() {
+                $(this).animate({
+                    color: "#FF0000"
+                }, 500);
+            });
+            function generateCoin(coinid){
+                $.ajax({
+            type: "Get",
+            url: "https://api.coinpaprika.com/v1/coins",
+            success: function (data) {
+                
+                    type = data[coinid].type;
+                    id = data[coinid].id;
+                    name = data[coinid].name;
+                    var text = ""; 
+                    $("p").append(name + " " + type + " ");
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) {
+                alert("Status: " + textStatus); alert("Error: " + errorThrown);
+            }
+        });
+    }
+    });
+
+</script>
+
+</html>
